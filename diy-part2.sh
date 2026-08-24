@@ -93,3 +93,11 @@ config interface 'lan'
         option netmask '255.255.255.0'
         option ip6assign '60'
 EOF
+
+# ====================== 修复：单独拉取单个插件到package目录，不要写进feeds ======================
+cd package
+# 首页温度挂件 luci‑app‑temp‑status
+git clone --depth 1 https://github.com/gSpotx2f/luci-app-temp-status.git tempstatus
+# PWM风扇控制插件
+git clone --depth 1 https://github.com/openwrt‑packages/luci-app-pwm-fan.git pwmfan
+cd ..

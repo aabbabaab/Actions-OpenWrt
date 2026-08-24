@@ -12,7 +12,3 @@ src-git dae https://github.com/daeuniverse/dae-openwrt.git;main
 src-git argon https://github.com/jerrykuku/luci-theme-argon.git;master
 # Argon设置面板
 src-git argonconfig https://github.com/jerrykuku/luci-app-argon-config.git;master
-# PWM风扇
-src-git pwmfan https://github.com/openwrt-packages/openwrt-packages.git
-# 首页CPU温度挂件
-src-git tempstatus https://github.com/gSpotx2f/luci-app-temp-status.git
