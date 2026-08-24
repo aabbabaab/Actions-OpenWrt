@@ -1,0 +1,82 @@
+name: Build OpenWrt
+
+on:
+  workflow_dispatch:
+    inputs:
+      REPO_URL:
+        description: 'OpenWrt源码仓库地址'
+        required: false
+        default: 'https://github.com/immortalwrt/immortalwrt'
+      REPO_BRANCH:
+        description: '源码分支'
+        required: false
+        default: 'openwrt-23.05'
+      FEED_CONF:
+        description: 'feeds.conf.default文件名'
+        required: false
+        default: 'feeds.conf.default'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Initialization environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python3-yaml unzip zlib1g-dev lib32gcc-s1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl rsync
+
+      - name: Clone source code
+        run: |
+          git clone ${{ github.event.inputs.REPO_URL }} openwrt -b ${{ github.event.inputs.REPO_BRANCH }} --depth 1
+          cd openwrt
+          echo "SOURCE_COMMIT: $(git rev-parse --short HEAD)"
+
+      - name: Update feeds
+        run: |
+          cd openwrt
+          cp ../${{ github.event.inputs.FEED_CONF }} feeds.conf.default
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      - name: Load custom configuration
+        run: |
+          cd openwrt
+          cp ../.config .config
+          make defconfig
+
+      - name: Custom script part1
+        run: |
+          if [ -f ../diy-part1.sh ];then
+            chmod +x ../diy-part1.sh
+            bash ../diy-part1.sh
+          fi
+
+      - name: Custom script part2
+        run: |
+          if [ -f ../diy-part2.sh ];then
+            chmod +x ../diy-part2.sh
+            bash ../diy-part2.sh
+          fi
+
+      - name: Download package
+        run: |
+          cd openwrt
+          make download -j$(nproc)
+
+      - name: Compile firmware
+        run: |
+          cd openwrt
+          make -j$(nproc)
+
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenWrt-Firmware
+          path: openwrt/bin/targets/*/*/*.img*
+          retention-days: 7
