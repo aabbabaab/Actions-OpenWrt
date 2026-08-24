@@ -94,10 +94,21 @@ config interface 'lan'
         option ip6assign '60'
 EOF
 
-# ====================== 修复：单独拉取单个插件到package目录，不要写进feeds ======================
+# ====================== 全部第三方插件，git clone拉取到package目录 ======================
 cd package
-# 首页温度挂件 luci‑app‑temp‑status
+# QModem 5G模组
+git clone --depth 1 https://github.com/FUjr/QModem.git qmodem
+# OpenClash
+git clone --depth 1 https://github.com/vernesong/OpenClash.git openclash
+# DAE内核转发
+git clone --depth 1 https://github.com/daeuniverse/dae-openwrt.git dae
+# Argon主题
+git clone --depth 1 https://github.com/jerrykuku/luci-theme-argon.git argon-theme
+# Argon设置面板
+git clone --depth 1 https://github.com/jerrykuku/luci-app-argon-config.git argon-config
+# CPU温度挂件
 git clone --depth 1 https://github.com/gSpotx2f/luci-app-temp-status.git tempstatus
-# PWM风扇控制插件
-git clone --depth 1 https://github.com/openwrt‑packages/luci-app-pwm-fan.git pwmfan
+# PWM风扇
+git clone --depth 1 https://github.com/openwrt-packages/luci-app-pwm-fan.git pwmfan
+
 cd ..

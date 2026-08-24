@@ -2,13 +2,3 @@ src-git-full packages https://github.com/immortalwrt/packages.git
 src-git-full luci https://github.com/immortalwrt/luci.git
 src-git-full routing https://github.com/immortalwrt/routing.git
 src-git-full telephony https://github.com/immortalwrt/telephony.git
-# QModem 4G/5G模组
-src-git qmodem https://github.com/FUjr/QModem.git;main
-# OpenClash
-src-git openclash https://github.com/vernesong/OpenClash.git;master
-# DAE内核转发
-src-git dae https://github.com/daeuniverse/dae-openwrt.git;main
-# Argon主题
-src-git argon https://github.com/jerrykuku/luci-theme-argon.git;master
-# Argon设置面板
-src-git argonconfig https://github.com/jerrykuku/luci-app-argon-config.git;master
