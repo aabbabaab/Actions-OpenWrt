@@ -1,0 +1,3 @@
+src-git argon https://github.com/jerrykuku/luci-theme-argon.git
+src-git modem https://github.com/4IceG/luci-app-3ginfo-modem.git
+src-git quectel https://github.com/4IceG/Modem-Support.git
